@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>文件列表 - 中航下载服务</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='index-T5H5Gt7v.css') }}">
+  <script src="{{ url_for('static', filename='index-PvGeJLF5.js') }}"></script>
+</head>
+
+<body>
+  <mdui-top-app-bar style="position: relative;">
+    <mdui-button-icon icon="menu"></mdui-button-icon>
+    <mdui-top-app-bar-title>中航下载服务</mdui-top-app-bar-title>
+    <div style="flex-grow: 1"></div>
+    <mdui-tooltip content="模式切换">
+      <div id="mode_switch_button" onclick="switchMode()"><mdui-button-icon icon="light_mode"></mdui-button-icon></div>
+    </mdui-tooltip>
+    <!-- 明暗模式切换 -->
+    <mdui-tooltip content="刷新">
+      <mdui-button-icon icon="refresh" onclick="refreshPage()"></mdui-button-icon>
+    </mdui-tooltip>
+  </mdui-top-app-bar>
+  <mdui-list>
+    {% for file_info in files_info %}
+    <li><a href="/download/{{ file_info.filename }}">{{ file_info.filename }}</a> - 时间: {{ file_info.modified_time }}</li>
+    {% endfor %}
+  </mdui-list>
+  <script>
+    function refreshPage() {
+      location.reload(true);
+    }
+  </script>
+
+</body>
+
+</html>
