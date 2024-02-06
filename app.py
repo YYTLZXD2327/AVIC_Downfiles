@@ -46,4 +46,6 @@ def page_not_found(e):
     return render_template('404.html'), 404
 
 if __name__ == '__main__':
+    if not os.path.exists(download_folder):
+        os.makedirs(download_folder)
     app.run()
