@@ -14,9 +14,9 @@ jobs:
         with:
           python-version: '3.11'
           cache: 'pip'
-      - run pip install --upgrade pip
+      - run: pip install --upgrade pip
       - run: pip install -r requirements.txt
-      - run: pip test 
+      - run: python app.py
 
       - name: Log in to Docker Hub
         uses: docker/login-action@f4ef78c080cd8ba55a85445d5b36e214a81df20a
