@@ -48,4 +48,4 @@ def page_not_found(e):
 if __name__ == '__main__':
     if not os.path.exists(download_folder):
         os.makedirs(download_folder)
-    app.run()
+    app.run(host='0.0.0.0', port=5000)
