@@ -1,6 +1,5 @@
+**v0.1.0** | 🌏English | [简体中文](https://github.com/YYTLZXD2327/AVIC_Downfiles/blob/master/README.zh-CN.md)
 # AVIC_Downfiles
-English  [简体中文]()
-
 > Building a simple and stable file download webpage using Python language.
 
 ## Usage
