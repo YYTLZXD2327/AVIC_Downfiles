@@ -5,34 +5,57 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>文件列表 - 中航下载服务</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='index-T5H5Gt7v.css') }}">
-  <script src="{{ url_for('static', filename='index-PvGeJLF5.js') }}"></script>
+  <link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}">
+  <script src="{{ url_for('static', filename='index.js') }}"></script>
+  <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap.min.css') }}">
+  <script src="{{ url_for('static', filename='bootstrap.bundle.min.js') }}"></script>
+  <script src="https://kit.fontawesome.com/15cf07dc69.js" crossorigin="anonymous"></script>
+  <link rel="shortcut icon" href="{{ url_for('static', filename='YYTLZXD.ico') }}" type="image/x-icon">
 </head>
 
 <body>
-  <mdui-top-app-bar style="position: relative;">
-    <mdui-button-icon icon="menu"></mdui-button-icon>
-    <mdui-top-app-bar-title>中航下载服务</mdui-top-app-bar-title>
-    <div style="flex-grow: 1"></div>
-    <mdui-tooltip content="模式切换">
-      <div id="mode_switch_button" onclick="switchMode()"><mdui-button-icon icon="light_mode"></mdui-button-icon></div>
-    </mdui-tooltip>
-    <!-- 明暗模式切换 -->
-    <mdui-tooltip content="刷新">
-      <mdui-button-icon icon="refresh" onclick="refreshPage()"></mdui-button-icon>
-    </mdui-tooltip>
-  </mdui-top-app-bar>
-  <mdui-list>
-    {% for file_info in files_info %}
-    <li><a href="/download/{{ file_info.filename }}">{{ file_info.filename }}</a> - 时间: {{ file_info.modified_time }}</li>
-    {% endfor %}
-  </mdui-list>
-  <script>
-    function refreshPage() {
-      location.reload(true);
-    }
-  </script>
+  <div class="container">
+    <header class="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom">
+      <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none">
+        <img src="{{ url_for('static', filename='YYTLZXD.ico') }}" alt="Icon"
+          style="width: 40px;height: 40px;border-radius: 100px;">
+        <span class="fs-4"> 中航下载服务</span>
+      </a>
 
+      <ul class="nav nav-pills">
+        <li class="nav-item"><a href="https://github.com/YYTLZXD2327/AVIC_Downfiles" class="nav-link">GitHub</a></li>
+      </ul>
+    </header>
+  </div>
+
+
+  <div class="fileslist">
+    <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item active" aria-current="page"><i class="fa-solid fa-house"></i>首页</li>
+      </ol>
+    </nav>
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">文件名</th>
+          <th scope="col">最后修改时间</th>
+          <th scope="col">文件大小</th>
+          <th scope="col">操作</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for file_info in files_info %}
+        <tr>
+          <td>{{ file_info[0] }}</td>
+          <td>{{ file_info[2] }}</td>
+          <td>{{ file_info[1] }}</td>
+          <td><a href="/download/{{ file_info[0] }}" download><i class="fa-solid fa-download"></i></i></i></a></td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
 </body>
 
 </html>

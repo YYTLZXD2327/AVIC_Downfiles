@@ -1,0 +1,22 @@
+body {
+    background-color: #fafafa;
+}
+
+.title {
+    text-align: center;
+}
+
+.fileslist {
+    position: absolute;
+    background-color: #ffffff;
+    top: 10%;
+    left: 50%;
+    width: 70%;
+    margin: auto;
+    -webkit-transform: translate(-50%);
+    -moz-transform: translate(-50%);
+    -ms-transform: translate(-50%);
+    -o-transform: translate(-50%);
+    transform: translate(-50%);
+    border-radius: 20px;
+}
