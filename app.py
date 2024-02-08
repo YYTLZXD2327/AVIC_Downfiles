@@ -51,10 +51,9 @@ def get_file_info(file_path):
 
 def require_auth(func):
     def wrapper(*args, **kwargs):
-        if 'username' in session and session['username'] == admin_username:
-            return func(*args, **kwargs)
-        else:
+        if request.endpoint == 'admin' and ('username' not in session or session['username'] != admin_username):
             return redirect(url_for('login'))
+        return func(*args, **kwargs)
     return wrapper
 
 
@@ -85,9 +84,10 @@ def login():
         password = request.form['password']
         if username == admin_username and password == admin_password:
             # 登录成功，重定向到管理页面
+            session['username'] = admin_username
             return redirect(url_for('admin'))
         else:
-            return 'Invalid username or password'
+            return '用户名或密码无效'
     
     return render_template('login.html')
 
@@ -102,12 +102,12 @@ def admin():
 @require_auth
 def upload_file():
     if 'file' not in request.files:
-        return "No file part", 400
+        return "无文件部分", 400
 
     file = request.files['file']
 
     if file.filename == '':
-        return "No selected file", 400
+        return "没有选定的文件", 400
 
     file.save(os.path.join(savepath, file.filename))
     return redirect(url_for('index'))
@@ -121,9 +121,9 @@ def delete_file(filename):
         os.remove(file_path)
         return redirect(url_for('index'))
     else:
-        return "File not found", 404
+        return "未找到文件", 404
 
-@app.route('/api/files', methods=['GET'], endpoint='files')
+@app.route('/api/files', methods=['POST'], endpoint='files')
 @require_auth
 def get_files_info():
     files_info = []
@@ -133,9 +133,9 @@ def get_files_info():
         if os.path.isfile(file_path):
             file_info = get_file_info(file_path)
             files_info.append({
-                'file_name': file_info[0],
-                'file_size': file_info[1],
-                'last_modified': str(file_info[2])
+                '文件名': file_info[0],
+                '文件大小': file_info[1],
+                '最后修改时间': str(file_info[2])
             })
 
     return jsonify(files_info)
