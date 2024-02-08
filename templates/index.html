@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>文件列表 - 中航下载服务</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}">
+  <script src="{{ url_for('static', filename='index.js') }}"></script>
+  <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap.min.css') }}">
+  <script src="{{ url_for('static', filename='bootstrap.bundle.min.js') }}"></script>
+  <script src="https://kit.fontawesome.com/15cf07dc69.js" crossorigin="anonymous"></script>
+  <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
+</head>
+
+<body>
+  <div class="container">
+    <header class="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom">
+      <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none">
+        <img src="{{ url_for('static', filename='favicon.ico') }}" alt="Icon"
+          style="width: 40px;height: 40px;border-radius: 100px;">
+        <span class="fs-4"> 中航下载服务</span>
+      </a>
+
+      <ul class="nav nav-pills">
+        <li class="nav-item"><a href="https://github.com/YYTLZXD2327/AVIC_Downfiles" class="nav-link">GitHub</a></li>
+        <li class="nav-item"><a href="https://gitee.com/yytlzxd/AVIC_Downfiles" class="nav-link">Gitee</a></li>
+      </ul>
+    </header>
+  </div>
+
+
+  <div class="fileslist">
+    <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item active" aria-current="page"><i class="fa-solid fa-house"></i>首页</li>
+      </ol>
+    </nav>
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">文件名</th>
+          <th scope="col">最后修改时间</th>
+          <th scope="col">文件大小</th>
+          <th scope="col">操作</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for file_info in files_info %}
+        <tr>
+          <td>{{ file_info[0] }}</td>
+          <td>{{ file_info[2] }}</td>
+          <td>{{ file_info[1] }}</td>
+          <td><a href="/download/{{ file_info[0] }}" download><i class="fa-solid fa-download"></i></i></i></a></td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</body>
+
+</html>
