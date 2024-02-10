@@ -1,6 +1,7 @@
 # 导入模块
 from flask import Flask, render_template, request, jsonify, redirect, url_for, session, send_from_directory
-from flask_login import LoginManager, UserMixin, login_user, login_required, current_user
+from flask_login import LoginManager, UserMixin, login_user, login_required, current_user, logout_user
+from werkzeug.security import generate_password_hash, check_password_hash
 import os
 import math
 import yaml
@@ -96,13 +97,6 @@ print('Initialization completed, starting...')
 # 开始创建网站
 app = Flask(__name__)
 
-# 模拟用户数据库
-app.secret_key = key
-login_manager = LoginManager()
-login_manager.init_app(app)
-class User(UserMixin):
-    def __init__(self, id):
-        self.id = id
 def convert_size(size_bytes):
     if size_bytes == 0:
         return "0 B"
@@ -150,11 +144,27 @@ def download(filename):
     else:
         return "不允许的方法", 405
 
+app.secret_key = key
+
+login_manager = LoginManager()
+login_manager.init_app(app)
+
+# 模拟用户数据库
+class User(UserMixin):
+    def __init__(self, id):
+        self.id = id
+
+# 未经授权处理函数
+@login_manager.unauthorized_handler
+def unauthorized():
+    return redirect(url_for('login'))
+
 # 用户认证
 @login_manager.user_loader
 def load_user(user_id):
     return User(user_id)
 
+# 登录页面
 @app.route('/login', methods=['GET', 'POST'], endpoint='login')
 def login():
     if request.method == 'POST':
@@ -166,21 +176,22 @@ def login():
             login_user(user)
             return redirect(url_for('admin'))
         else:
-            return '错误:您输入的用户名或密码无效'
+            return '错误: 您输入的用户名或密码无效'
     
     return render_template('login.html')
 
-# 管理界面
+# 注销功能
+@app.route('/logout', endpoint='logout')
+@login_required
+def logout():
+    logout_user()
+    return redirect(url_for('login'))
+
+# 管理页面
 @app.route('/admin', endpoint='admin')
 @login_required
 def admin():
     return render_template('control.html')
-
-# 未登录时的处理
-@login_manager.unauthorized_handler
-def unauthorized():
-    return redirect(url_for('login'))
-
 # 上传文件
 @app.route('/upload', methods=['POST'], endpoint='upload_file')
 @require_auth
