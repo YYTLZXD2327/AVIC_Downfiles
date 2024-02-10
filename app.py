@@ -171,7 +171,7 @@ def login():
             login_user(user)
             return redirect(url_for('admin'))
         else:
-            return '用户名或密码无效'
+            return '错误:您输入的用户名或密码无效'
     
     return render_template('login.html')
 

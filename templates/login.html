@@ -1,19 +1,63 @@
 <!DOCTYPE html>
-<html lang="zh-cn">
-<html>
+<html lang="en">
+
 <head>
-    <title>Login</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>登录 - 中航Down</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}">
+    <script src="{{ url_for('static', filename='index.js') }}"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap.min.css') }}">
+    <script src="{{ url_for('static', filename='bootstrap.bundle.min.js') }}"></script>
+    <script src="https://kit.fontawesome.com/15cf07dc69.js" crossorigin="anonymous"></script>
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
 </head>
+
 <body>
-    <h1>Login</h1>
-    <form method="post">
-        <label for="username">Username:</label>
-        <input type="text" id="username" name="username" required><br><br>
-        
-        <label for="password">Password:</label>
-        <input type="password" id="password" name="password" required><br><br>
-        
-        <input type="submit" value="Login">
-    </form>
+    <div class="container">
+        <header class="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom">
+            <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none">
+                <img src="{{ url_for('static', filename='favicon.ico') }}" alt="Icon"
+                    style="width: 40px;height: 40px;border-radius: 100px;">
+                <span class="fs-4">&nbsp;中航Down</span>
+            </a>
+
+            <ul class="nav nav-pills">
+                <li class="nav-item"><a href="https://github.com/YYTLZXD2327/AVIC_Downfiles" class="nav-link">GitHub</a>
+                </li>
+                <li class="nav-item"><a href="https://gitee.com/yytlzxd/AVIC_Downfiles" class="nav-link">Gitee</a></li>
+                <li class="nav-item"><a href="./login" class="nav-link">Login / 登录</a></li>
+            </ul>
+        </header>
+        <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item active" aria-current="page"><a href="./"><i
+                            class="fa-solid fa-house"></i>首页</a></li>
+                <li class="breadcrumb-item">登录</li>
+            </ol>
+        </nav>
+    </div>
+
+    <div class="login">
+        <h1 style="text-align: center;">Login / 登录</h1>
+        <br>
+        <form method="post">
+            <div class="input-group mb-3">
+                <!-- <span class="input-group-text" id="basic-addon1">@</span> -->
+                <input type="text" class="form-control" id="username" name="username" placeholder="Username / 用户名"
+                    aria-label="username" aria-describedby="basic-addon1">
+            </div>
+            <div class="input-group mb-3">
+                <!-- <span class="input-group-text" id="basic-addon1">@</span> -->
+                <input type="password" class="form-control" id="password" name="password" placeholder="Password / 密码"
+                    aria-label="password" aria-describedby="basic-addon1">
+            </div>
+            <div class="d-grid gap-2">
+                <button class="btn btn-primary" type="button submit" onclick="login()">OK / 确定</button>
+            </div>
+        </form>
+    </div>
+
 </body>
+
 </html>

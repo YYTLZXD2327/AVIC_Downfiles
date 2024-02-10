@@ -1,13 +1,40 @@
 <!DOCTYPE html>
-<html lang="zh-cn">
+<html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>404 Not Found - 中航下载服务</title>
+    <title>控制面板 - 中航Down</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}">
+    <script src="{{ url_for('static', filename='index.js') }}"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap.min.css') }}">
+    <script src="{{ url_for('static', filename='bootstrap.bundle.min.js') }}"></script>
+    <script src="https://kit.fontawesome.com/15cf07dc69.js" crossorigin="anonymous"></script>
     <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
 </head>
+
 <body>
-    <h1 style="text-align: center;">404 Not Found</h1>
-    <p style="text-align: center;">在服务器上找不到对应请求的 URL。请检查您的拼写，然后重试。</p>
-    <p style="text-align: center;">AVIC DOWNFILES | Love comes from YYTLZXD</p>
+    <div class="container">
+        <header class="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom">
+            <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none">
+                <img src="{{ url_for('static', filename='favicon.ico') }}" alt="Icon"
+                    style="width: 40px;height: 40px;border-radius: 100px;">
+                <span class="fs-4">&nbsp;中航Down</span>
+            </a>
+
+            <ul class="nav nav-pills">
+                <li class="nav-item"><a href="https://github.com/YYTLZXD2327/AVIC_Downfiles" class="nav-link">GitHub</a>
+                </li>
+                <li class="nav-item"><a href="https://gitee.com/yytlzxd/AVIC_Downfiles" class="nav-link">Gitee</a></li>
+            </ul>
+        </header>
+        <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item active" aria-current="page"><i class="fa-solid fa-bars-progress"></i>管理后台
+                </li>
+            </ol>
+        </nav>
+    </div>
+</body>
+
 </html>

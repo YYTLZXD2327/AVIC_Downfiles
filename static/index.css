@@ -6,17 +6,17 @@ body {
     text-align: center;
 }
 
-.fileslist {
+.login {
     position: absolute;
-    background-color: #ffffff;
-    top: 10%;
+    top: 40%;
     left: 50%;
-    width: 70%;
+    width: 20%;
+    height: 20%;
     margin: auto;
-    -webkit-transform: translate(-50%);
-    -moz-transform: translate(-50%);
-    -ms-transform: translate(-50%);
-    -o-transform: translate(-50%);
-    transform: translate(-50%);
+    -webkit-transform: translate(-50%, -50%);
+    -moz-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    -o-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
     border-radius: 20px;
 }
