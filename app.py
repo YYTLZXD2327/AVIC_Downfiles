@@ -8,90 +8,68 @@ from datetime import datetime
 import requests
 
 
-# 初始化
-# static文件夹
+# 初始化通用变量
+static_folder_path = 'static'
+templates_folder_path = 'templates'
+
+# 加载static文件夹
 url = 'https://github.moeyy.xyz/https://raw.githubusercontent.com/YYTLZXD2327/AVIC_Downfiles/master/static/index.js'  # 文件的URL
-folder_path = 'static' 
 file_name = 'index.js'
-if not os.path.exists(os.path.join(folder_path, file_name)):
+if not os.path.exists(os.path.join(static_folder_path, file_name)):
     response = requests.get(url)
-    if not os.path.exists(folder_path):
-        os.makedirs(folder_path)
-    with open(os.path.join(folder_path, file_name), 'wb') as file:
+    with open(os.path.join(static_folder_path, file_name), 'wb') as file:
         file.write(response.content)
 url = 'https://github.moeyy.xyz/https://raw.githubusercontent.com/YYTLZXD2327/AVIC_Downfiles/master/static/index.css'  # 文件的URL
-folder_path = 'static' 
 file_name = 'index.css'
-if not os.path.exists(os.path.join(folder_path, file_name)):
+if not os.path.exists(os.path.join(static_folder_path, file_name)):
     response = requests.get(url)
-    if not os.path.exists(folder_path):
-        os.makedirs(folder_path)
-    with open(os.path.join(folder_path, file_name), 'wb') as file:
+    with open(os.path.join(static_folder_path, file_name), 'wb') as file:
         file.write(response.content)
 url = 'https://github.moeyy.xyz/https://raw.githubusercontent.com/YYTLZXD2327/AVIC_Downfiles/master/static/favicon.ico'  # 文件的URL
-folder_path = 'static' 
 file_name = 'favicon.ico'
-if not os.path.exists(os.path.join(folder_path, file_name)):
+if not os.path.exists(os.path.join(static_folder_path, file_name)):
     response = requests.get(url)
-    if not os.path.exists(folder_path):
-        os.makedirs(folder_path)
-    with open(os.path.join(folder_path, file_name), 'wb') as file:
+    with open(os.path.join(static_folder_path, file_name), 'wb') as file:
         file.write(response.content)
 url = 'https://github.moeyy.xyz/https://raw.githubusercontent.com/YYTLZXD2327/AVIC_Downfiles/master/static/bootstrap.min.css'  # 文件的URL
-folder_path = 'static' 
 file_name = 'bootstrap.min.css'
-if not os.path.exists(os.path.join(folder_path, file_name)):
+if not os.path.exists(os.path.join(static_folder_path, file_name)):
     response = requests.get(url)
-    if not os.path.exists(folder_path):
-        os.makedirs(folder_path)
-    with open(os.path.join(folder_path, file_name), 'wb') as file:
+    with open(os.path.join(static_folder_path, file_name), 'wb') as file:
         file.write(response.content)
 url = 'https://github.moeyy.xyz/https://raw.githubusercontent.com/YYTLZXD2327/AVIC_Downfiles/master/static/bootstrap.bundle.min.js'  # 文件的URL
-folder_path = 'static' 
 file_name = 'bootstrap.bundle.min.js'
-if not os.path.exists(os.path.join(folder_path, file_name)):
+if not os.path.exists(os.path.join(static_folder_path, file_name)):
     response = requests.get(url)
-    if not os.path.exists(folder_path):
-        os.makedirs(folder_path)
-    with open(os.path.join(folder_path, file_name), 'wb') as file:
+    with open(os.path.join(static_folder_path, file_name), 'wb') as file:
         file.write(response.content)
-# templates文件夹
+
+# 加载templates文件夹
 url = 'https://github.moeyy.xyz/https://github.com/YYTLZXD2327/AVIC_Downfiles/blob/master/templates/login.html'  # 文件的URL
-folder_path = 'templates' 
 file_name = 'login.html'
-if not os.path.exists(os.path.join(folder_path, file_name)):
+if not os.path.exists(os.path.join(templates_folder_path, file_name)):
     response = requests.get(url)
-    if not os.path.exists(folder_path):
-        os.makedirs(folder_path)
-    with open(os.path.join(folder_path, file_name), 'wb') as file:
+    with open(os.path.join(templates_folder_path, file_name), 'wb') as file:
         file.write(response.content)
 url = 'https://github.moeyy.xyz/https://github.com/YYTLZXD2327/AVIC_Downfiles/blob/master/templates/index.html'  # 文件的URL
-folder_path = 'templates' 
 file_name = 'index.html'
-if not os.path.exists(os.path.join(folder_path, file_name)):
+if not os.path.exists(os.path.join(templates_folder_path, file_name)):
     response = requests.get(url)
-    if not os.path.exists(folder_path):
-        os.makedirs(folder_path)
-    with open(os.path.join(folder_path, file_name), 'wb') as file:
+    with open(os.path.join(templates_folder_path, file_name), 'wb') as file:
         file.write(response.content)
 url = 'https://github.moeyy.xyz/https://github.com/YYTLZXD2327/AVIC_Downfiles/blob/master/templates/control.html'  # 文件的URL
-folder_path = 'templates' 
 file_name = 'control.html'
-if not os.path.exists(os.path.join(folder_path, file_name)):
+if not os.path.exists(os.path.join(templates_folder_path, file_name)):
     response = requests.get(url)
-    if not os.path.exists(folder_path):
-        os.makedirs(folder_path)
-    with open(os.path.join(folder_path, file_name), 'wb') as file:
+    with open(os.path.join(templates_folder_path, file_name), 'wb') as file:
         file.write(response.content)
 url = 'https://github.moeyy.xyz/https://github.com/YYTLZXD2327/AVIC_Downfiles/blob/master/templates/404.html'  # 文件的URL
-folder_path = 'templates' 
 file_name = '404.html'
-if not os.path.exists(os.path.join(folder_path, file_name)):
+if not os.path.exists(os.path.join(templates_folder_path, file_name)):
     response = requests.get(url)
-    if not os.path.exists(folder_path):
-        os.makedirs(folder_path)
-    with open(os.path.join(folder_path, file_name), 'wb') as file:
+    with open(os.path.join(templates_folder_path, file_name), 'wb') as file:
         file.write(response.content)
+
 # 配置文件
 config_path = 'static\\config.yml'
 if not os.path.exists(config_path):
@@ -117,6 +95,7 @@ port = config['port']
 download_folder = savepath
 os.makedirs(download_folder, exist_ok=True)
 print('初始化完成，正在启动...')
+print('Initialization completed, starting...')
 
 # 开始创建网站
 app = Flask(__name__)
