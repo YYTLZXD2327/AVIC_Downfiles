@@ -7,80 +7,74 @@ import yaml
 import time
 from datetime import datetime
 import requests
+from tqdm import tqdm
 
+# 获取当前文件所在目录的绝对路径
+current_folder_path = os.path.dirname(os.path.abspath(__file__))
 
-# 初始化通用变量
-static_folder_path = 'static'
-templates_folder_path = 'templates'
+# 定义static文件夹和templates文件夹的绝对路径
+static_folder_path = os.path.join(current_folder_path, 'static')
+templates_folder_path = os.path.join(current_folder_path, 'templates')
 
-# 加载static文件夹
-url = 'https://github.moeyy.xyz/https://raw.githubusercontent.com/YYTLZXD2327/AVIC_Downfiles/master/static/index.js'  # 文件的URL
-file_name = 'index.js'
-if not os.path.exists(os.path.join(static_folder_path, file_name)):
-    response = requests.get(url)
-    with open(os.path.join(static_folder_path, file_name), 'wb') as file:
-        file.write(response.content)
-url = 'https://github.moeyy.xyz/https://raw.githubusercontent.com/YYTLZXD2327/AVIC_Downfiles/master/static/index.css'  # 文件的URL
-file_name = 'index.css'
-if not os.path.exists(os.path.join(static_folder_path, file_name)):
-    response = requests.get(url)
-    with open(os.path.join(static_folder_path, file_name), 'wb') as file:
-        file.write(response.content)
-url = 'https://github.moeyy.xyz/https://raw.githubusercontent.com/YYTLZXD2327/AVIC_Downfiles/master/static/favicon.ico'  # 文件的URL
-file_name = 'favicon.ico'
-if not os.path.exists(os.path.join(static_folder_path, file_name)):
-    response = requests.get(url)
-    with open(os.path.join(static_folder_path, file_name), 'wb') as file:
-        file.write(response.content)
-url = 'https://github.moeyy.xyz/https://raw.githubusercontent.com/YYTLZXD2327/AVIC_Downfiles/master/static/bootstrap.min.css'  # 文件的URL
-file_name = 'bootstrap.min.css'
-if not os.path.exists(os.path.join(static_folder_path, file_name)):
-    response = requests.get(url)
-    with open(os.path.join(static_folder_path, file_name), 'wb') as file:
-        file.write(response.content)
-url = 'https://github.moeyy.xyz/https://raw.githubusercontent.com/YYTLZXD2327/AVIC_Downfiles/master/static/bootstrap.bundle.min.js'  # 文件的URL
-file_name = 'bootstrap.bundle.min.js'
-if not os.path.exists(os.path.join(static_folder_path, file_name)):
-    response = requests.get(url)
-    with open(os.path.join(static_folder_path, file_name), 'wb') as file:
-        file.write(response.content)
+# 创建static文件夹和templates文件夹（如果不存在）
+if not os.path.exists(static_folder_path):
+    os.makedirs(static_folder_path)
 
-# 加载templates文件夹
-url = 'https://github.moeyy.xyz/https://github.com/YYTLZXD2327/AVIC_Downfiles/blob/master/templates/login.html'  # 文件的URL
-file_name = 'login.html'
-if not os.path.exists(os.path.join(templates_folder_path, file_name)):
-    response = requests.get(url)
-    with open(os.path.join(templates_folder_path, file_name), 'wb') as file:
-        file.write(response.content)
-url = 'https://github.moeyy.xyz/https://github.com/YYTLZXD2327/AVIC_Downfiles/blob/master/templates/index.html'  # 文件的URL
-file_name = 'index.html'
-if not os.path.exists(os.path.join(templates_folder_path, file_name)):
-    response = requests.get(url)
-    with open(os.path.join(templates_folder_path, file_name), 'wb') as file:
-        file.write(response.content)
-url = 'https://github.moeyy.xyz/https://github.com/YYTLZXD2327/AVIC_Downfiles/blob/master/templates/control.html'  # 文件的URL
-file_name = 'control.html'
-if not os.path.exists(os.path.join(templates_folder_path, file_name)):
-    response = requests.get(url)
-    with open(os.path.join(templates_folder_path, file_name), 'wb') as file:
-        file.write(response.content)
-url = 'https://github.moeyy.xyz/https://github.com/YYTLZXD2327/AVIC_Downfiles/blob/master/templates/404.html'  # 文件的URL
-file_name = '404.html'
-if not os.path.exists(os.path.join(templates_folder_path, file_name)):
-    response = requests.get(url)
-    with open(os.path.join(templates_folder_path, file_name), 'wb') as file:
-        file.write(response.content)
+if not os.path.exists(templates_folder_path):
+    os.makedirs(templates_folder_path)
+
+# 加载static文件夹中的文件
+static_files = {
+    'index.js': 'https://github.moeyy.xyz/https://raw.githubusercontent.com/YYTLZXD2327/AVIC_Downfiles/master/static/index.js',
+    'index.css': 'https://github.moeyy.xyz/https://raw.githubusercontent.com/YYTLZXD2327/AVIC_Downfiles/master/static/index.css',
+    'favicon.ico': 'https://github.moeyy.xyz/https://raw.githubusercontent.com/YYTLZXD2327/AVIC_Downfiles/master/static/favicon.ico',
+    'bootstrap.min.css': 'https://github.moeyy.xyz/https://raw.githubusercontent.com/YYTLZXD2327/AVIC_Downfiles/master/static/bootstrap.min.css',
+    'bootstrap.bundle.min.js': 'https://github.moeyy.xyz/https://raw.githubusercontent.com/YYTLZXD2327/AVIC_Downfiles/master/static/bootstrap.bundle.min.js'
+}
+
+for file_name, url in static_files.items():
+    file_path = os.path.join(static_folder_path, file_name)
+    if not os.path.exists(file_path):
+        response = requests.get(url, stream=True)
+        total_size = int(response.headers.get('content-length', 0))
+        progress = tqdm(total=total_size, unit='B', unit_scale=True)
+        with open(file_path, 'wb') as file:
+            for data in response.iter_content(chunk_size=1024):
+                progress.update(len(data))
+                file.write(data)
+        progress.close()
+
+# 加载templates文件夹中的文件
+templates_files = {
+    'login.html': 'https://github.moeyy.xyz/https://github.com/YYTLZXD2327/AVIC_Downfiles/blob/master/templates/login.html',
+    'index.html': 'https://github.moeyy.xyz/https://github.com/YYTLZXD2327/AVIC_Downfiles/blob/master/templates/index.html',
+    'control.html': 'https://github.moeyy.xyz/https://github.com/YYTLZXD2327/AVIC_Downfiles/blob/master/templates/control.html',
+    '404.html': 'https://github.moeyy.xyz/https://github.com/YYTLZXD2327/AVIC_Downfiles/blob/master/templates/404.html'
+}
+
+for file_name, url in templates_files.items():
+    file_path = os.path.join(templates_folder_path, file_name)
+    if not os.path.exists(file_path):
+        response = requests.get(url, stream=True)
+        total_size = int(response.headers.get('content-length', 0))
+        progress = tqdm(total=total_size, unit='B', unit_scale=True)
+        with open(file_path, 'wb') as file:
+            for data in response.iter_content(chunk_size=1024):
+                progress.update(len(data))
+                file.write(data)
+        progress.close()
 
 # 配置文件
 config_path = 'static\\config.yml'
 if not os.path.exists(config_path):
     config = {
-        'Savepath': 'download',
-        'password': 'password',
-        'username': 'admin',
-        'host': '0.0.0.0',
-        'port': '5000'
-    }
+            'Savepath': 'download',
+            'password': 'password',
+            'username': 'admin',
+            'key': '1234567890',
+            'host': '0.0.0.0',
+            'port': '5000'
+            }
     os.makedirs('static', exist_ok=True)
     with open(config_path, 'w') as f:
         yaml.dump(config, f)
@@ -90,6 +84,7 @@ with open(config_path, 'r') as f:
 savepath = config['Savepath']
 admin_username = config['username']
 admin_password = config['password']
+key = config['key']
 host = config['host']
 port = config['port']
 # 保存文件
@@ -102,7 +97,7 @@ print('Initialization completed, starting...')
 app = Flask(__name__)
 
 # 模拟用户数据库
-app.secret_key = '12c'
+app.secret_key = key
 login_manager = LoginManager()
 login_manager.init_app(app)
 class User(UserMixin):
