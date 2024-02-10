@@ -1,5 +1,6 @@
 # 导入模块
 from flask import Flask, render_template, request, jsonify, redirect, url_for, session, send_from_directory
+from flask_login import LoginManager, UserMixin, login_user, login_required, current_user
 import os
 import math
 import yaml
@@ -120,6 +121,14 @@ print('初始化完成，正在启动...')
 
 # 开始创建网站
 app = Flask(__name__)
+
+# 模拟用户数据库
+app.secret_key = '12c'
+login_manager = LoginManager()
+login_manager.init_app(app)
+class User(UserMixin):
+    def __init__(self, id):
+        self.id = id
 def convert_size(size_bytes):
     if size_bytes == 0:
         return "0 B"
@@ -167,28 +176,38 @@ def download(filename):
     else:
         return "不允许的方法", 405
 
-# 登录页面
+# 用户认证
+@login_manager.user_loader
+def load_user(user_id):
+    return User(user_id)
+
 @app.route('/login', methods=['GET', 'POST'], endpoint='login')
 def login():
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
         if username == admin_username and password == admin_password:
-            # 登录成功，重定向到管理页面
-            session['username'] = admin_username
+            # 登录成功
+            user = User(1)  # 模拟用户
+            login_user(user)
             return redirect(url_for('admin'))
         else:
             return '用户名或密码无效'
     
     return render_template('login.html')
 
-# 管理页面，需要登录后才能访问
+# 管理界面
 @app.route('/admin', endpoint='admin')
-@require_auth
+@login_required
 def admin():
     return render_template('control.html')
 
+# 未登录时的处理
+@login_manager.unauthorized_handler
+def unauthorized():
+    return redirect(url_for('login'))
 
+# 上传文件
 @app.route('/upload', methods=['POST'], endpoint='upload_file')
 @require_auth
 def upload_file():
@@ -204,6 +223,7 @@ def upload_file():
     return redirect(url_for('index'))
 
 
+# 删除文件
 @app.route('/delete/<path:filename>', methods=['POST'], endpoint='delete_file')
 @require_auth
 def delete_file(filename):
@@ -214,7 +234,7 @@ def delete_file(filename):
         return redirect(url_for('index'))
     else:
         return "未找到文件", 404
-
+# 文件列表
 @app.route('/api/files', methods=['POST'], endpoint='files')
 def get_files_info():
     files_info = []
@@ -232,6 +252,7 @@ def get_files_info():
 
     return jsonify(files_info)
 
+# 404界面
 @app.errorhandler(404)
 def page_not_found(e):
     return render_template('404.html'), 404
