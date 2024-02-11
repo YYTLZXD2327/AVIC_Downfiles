@@ -9,7 +9,29 @@ import time
 from datetime import datetime
 import requests
 from tqdm import tqdm
+import requests
+ 
+# 下载最新的APNIC IP地址分配数据
+url = 'http://ftp.apnic.net/apnic/stats/apnic/delegated-apnic-latest'
+response = requests.get(url)
 
+if response.status_code == 200:
+    data = response.text.splitlines()
+    
+    # 提取中国IPv4地址范围并写入文件
+    with open('china_ip.txt', 'w') as file:
+        for line in data:
+            if 'ipv4' in line and 'CN' in line:
+                parts = line.split('|')
+                ip_range = parts[3]
+                cidr = 32 - int(parts[4]) // 2
+                file.write(f"{ip_range}/{cidr}\n")
+
+    print("中国IPv4地址范围已写入china_ip.txt文件。")
+    url = 'https://github.moeyy.xyz/https://raw.githubusercontent.com/YYTLZXD2327/AVIC_Downfiles/master/'
+else:
+    print("无法下载APNIC数据。")
+    url = 'https://raw.githubusercontent.com/YYTLZXD2327/AVIC_Downfiles/master/'
 # 获取当前文件所在目录的绝对路径
 current_folder_path = os.path.dirname(os.path.abspath(__file__))
 
@@ -26,11 +48,11 @@ if not os.path.exists(templates_folder_path):
 
 # 加载static文件夹中的文件
 static_files = {
-    'index.js': 'https://github.moeyy.xyz/https://raw.githubusercontent.com/YYTLZXD2327/AVIC_Downfiles/master/static/index.js',
-    'index.css': 'https://github.moeyy.xyz/https://raw.githubusercontent.com/YYTLZXD2327/AVIC_Downfiles/master/static/index.css',
-    'favicon.ico': 'https://github.moeyy.xyz/https://raw.githubusercontent.com/YYTLZXD2327/AVIC_Downfiles/master/static/favicon.ico',
-    'bootstrap.min.css': 'https://github.moeyy.xyz/https://raw.githubusercontent.com/YYTLZXD2327/AVIC_Downfiles/master/static/bootstrap.min.css',
-    'bootstrap.bundle.min.js': 'https://github.moeyy.xyz/https://raw.githubusercontent.com/YYTLZXD2327/AVIC_Downfiles/master/static/bootstrap.bundle.min.js'
+    'index.js': url + 'static/index.js',
+    'index.css': url + 'static/index.css',
+    'favicon.ico': url + 'static/favicon.ico',
+    'bootstrap.min.css': url + 'static/bootstrap.min.css',
+    'bootstrap.bundle.min.js': url + 'static/bootstrap.bundle.min.js'
 }
 
 for file_name, url in static_files.items():
@@ -47,10 +69,10 @@ for file_name, url in static_files.items():
 
 # 加载templates文件夹中的文件
 templates_files = {
-    'login.html': 'https://github.moeyy.xyz/https://github.com/YYTLZXD2327/AVIC_Downfiles/blob/master/templates/login.html',
-    'index.html': 'https://github.moeyy.xyz/https://github.com/YYTLZXD2327/AVIC_Downfiles/blob/master/templates/index.html',
-    'control.html': 'https://github.moeyy.xyz/https://github.com/YYTLZXD2327/AVIC_Downfiles/blob/master/templates/control.html',
-    '404.html': 'https://github.moeyy.xyz/https://github.com/YYTLZXD2327/AVIC_Downfiles/blob/master/templates/404.html'
+    'login.html': url + 'templates/login.html',
+    'index.html': url + 'templates/index.html',
+    'control.html': url + 'templates/control.html',
+    '404.html': url + 'templates/404.html'
 }
 
 for file_name, url in templates_files.items():
