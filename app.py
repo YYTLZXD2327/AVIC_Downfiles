@@ -11,8 +11,7 @@ import requests
 from tqdm import tqdm
 import requests
 
-# 获取公网ip
-url = 'https://github.moeyy.xyz/https://raw.githubusercontent.com/YYTLZXD2327/AVIC_Downfiles/master/'
+# 获取公网IP地址
 def get_public_ip():
     try:
         response = requests.get('http://httpbin.org/ip')
@@ -34,6 +33,7 @@ def check_ip_location(ip):
         print(f"发生错误: {e}")
     return None
 
+# 获取公网IP地址和IP地址所在国家
 public_ip = get_public_ip()
 if public_ip:
     print(f"您的公网IP地址是: {public_ip}")
@@ -41,16 +41,18 @@ if public_ip:
     if country:
         if country == 'CN':
             print("您的IP地址位于中国。")
-            url = '0'
+            base_url = 'https://github.moeyy.xyz/https://raw.githubusercontent.com/YYTLZXD2327/AVIC_Downfiles/master'  # 加速服务器URL
         else:
             print("您的IP地址位于中国以外。")
-            url = 'https://raw.githubusercontent.com/YYTLZXD2327/AVIC_Downfiles/master/'
+            base_url = 'https://raw.githubusercontent.com/YYTLZXD2327/AVIC_Downfiles/master'  # GitHub URL
     else:
         print("无法确定IP地址的位置，默认为中国。")
+        base_url = 'https://github.moeyy.xyz/https://raw.githubusercontent.com/YYTLZXD2327/AVIC_Downfiles/master'  # 默认为中国
+
 else:
     print("无法获取公网IP地址，默认为中国。")
+    base_url = 'https://github.moeyy.xyz/https://raw.githubusercontent.com/YYTLZXD2327/AVIC_Downfiles/master'  # 默认为中国
 
-    
 # 获取当前文件所在目录的绝对路径
 current_folder_path = os.path.dirname(os.path.abspath(__file__))
 
@@ -65,47 +67,53 @@ if not os.path.exists(static_folder_path):
 if not os.path.exists(templates_folder_path):
     os.makedirs(templates_folder_path)
 
+# 下载文件并显示下载进度、文件大小和下载时间
+def download_file(url, file_path):
+    response = requests.get(url, stream=True)
+    total_size = int(response.headers.get('content-length', 0))
+    start_time = time.time()
+
+    progress = tqdm(total=total_size, unit='B', unit_scale=True, desc=f'Downloading', bar_format='{l_bar}{bar}', colour='red')
+    with open(file_path, 'wb') as file:
+        for data in response.iter_content(chunk_size=1024):
+            progress.update(len(data))
+            file.write(data)
+    progress.close()
+
+    end_time = time.time()
+    download_time = end_time - start_time
+    file_size = os.path.getsize(file_path)
+    
+    print(f"Download complete: {file_path.split('/')[-1]}")
+    print(f"文件大小/File size: {file_size} bytes")
+    print(f"下载时间/Download time: {download_time:.2f} seconds")
+
 # 加载static文件夹中的文件
 static_files = {
-    'index.js': url + 'static/index.js',
-    'index.css': url + 'static/index.css',
-    'favicon.ico': url + 'static/favicon.ico',
-    'bootstrap.min.css': url + 'static/bootstrap.min.css',
-    'bootstrap.bundle.min.js': url + 'static/bootstrap.bundle.min.js'
+    'index.js': f'{base_url}/static/index.js',
+    'index.css': f'{base_url}/static/index.css',
+    'favicon.ico': f'{base_url}/static/favicon.ico',
+    'bootstrap.min.css': f'{base_url}/static/bootstrap.min.css',
+    'bootstrap.bundle.min.js': f'{base_url}/static/bootstrap.bundle.min.js'
 }
 
 for file_name, url in static_files.items():
     file_path = os.path.join(static_folder_path, file_name)
     if not os.path.exists(file_path):
-        response = requests.get(url, stream=True)
-        total_size = int(response.headers.get('content-length', 0))
-        progress = tqdm(total=total_size, unit='B', unit_scale=True)
-        with open(file_path, 'wb') as file:
-            for data in response.iter_content(chunk_size=1024):
-                progress.update(len(data))
-                file.write(data)
-        progress.close()
+        download_file(url, file_path)
 
 # 加载templates文件夹中的文件
 templates_files = {
-    'login.html': url + 'templates/login.html',
-    'index.html': url + 'templates/index.html',
-    'control.html': url + 'templates/control.html',
-    '404.html': url + 'templates/404.html'
+    'login.html': f'{base_url}/templates/login.html',
+    'index.html': f'{base_url}/templates/index.html',
+    'control.html': f'{base_url}/templates/control.html',
+    '404.html': f'{base_url}/templates/404.html'
 }
 
 for file_name, url in templates_files.items():
     file_path = os.path.join(templates_folder_path, file_name)
     if not os.path.exists(file_path):
-        response = requests.get(url, stream=True)
-        total_size = int(response.headers.get('content-length', 0))
-        progress = tqdm(total=total_size, unit='B', unit_scale=True)
-        with open(file_path, 'wb') as file:
-            for data in response.iter_content(chunk_size=1024):
-                progress.update(len(data))
-                file.write(data)
-        progress.close()
-
+        download_file(url, file_path)
 # 配置文件
 config_path = 'static\\config.yml'
 if not os.path.exists(config_path):
