@@ -1,15 +1,14 @@
 # 导入模块
-from flask import Flask, render_template, request, jsonify, redirect, url_for, session, send_from_directory
-from flask_login import LoginManager, UserMixin, login_user, login_required, current_user, logout_user
-from werkzeug.security import generate_password_hash, check_password_hash
-import os
+from flask import Flask, render_template, request, jsonify, redirect, url_for, send_from_directory
+from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user
+from apscheduler.schedulers.background import BackgroundScheduler
+from datetime import datetime, timedelta
+from tqdm import tqdm
+import requests
 import math
 import yaml
 import time
-from datetime import datetime
-import requests
-from tqdm import tqdm
-import requests
+import os
 
 # 获取公网IP地址
 def get_public_ip():
@@ -198,45 +197,45 @@ app.secret_key = key
 login_manager = LoginManager()
 login_manager.init_app(app)
 
+# 设置会话过期时间为一天
+app.permanent_session_lifetime = timedelta(days=1)
+
 # 模拟用户数据库
 class User(UserMixin):
     def __init__(self, id):
         self.id = id
 
-# 未经授权处理函数
 @login_manager.unauthorized_handler
 def unauthorized():
     return redirect(url_for('login'))
 
-# 用户认证
 @login_manager.user_loader
 def load_user(user_id):
-    return User(user_id)
+    return User(user_id) if user_id == '1' else None
 
-# 登录页面
 @app.route('/login', methods=['GET', 'POST'], endpoint='login')
 def login():
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
         if username == admin_username and password == admin_password:
-            # 登录成功
             user = User(1)  # 模拟用户
-            login_user(user)
+            login_user(user, remember=True)
             return redirect(url_for('admin'))
         else:
             return '错误: 您输入的用户名或密码无效'
     
     return render_template('login.html')
 
-# 注销功能
-@app.route('/logout', endpoint='logout')
+@app.route('/logout', methods=['POST'], endpoint='logout')
 @login_required
 def logout():
-    logout_user()
-    return redirect(url_for('login'))
+    if request.method == 'POST':
+        logout_user()
+        return redirect(url_for('login'))
+    else:
+        return 'Method Not Allowed', 405
 
-# 管理页面
 @app.route('/admin', endpoint='admin')
 @login_required
 def admin():
