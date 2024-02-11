@@ -10,28 +10,47 @@ from datetime import datetime
 import requests
 from tqdm import tqdm
 import requests
- 
-# 下载最新的APNIC IP地址分配数据
-url = 'http://ftp.apnic.net/apnic/stats/apnic/delegated-apnic-latest'
-response = requests.get(url)
 
-if response.status_code == 200:
-    data = response.text.splitlines()
-    
-    # 提取中国IPv4地址范围并写入文件
-    with open('china_ip.txt', 'w') as file:
-        for line in data:
-            if 'ipv4' in line and 'CN' in line:
-                parts = line.split('|')
-                ip_range = parts[3]
-                cidr = 32 - int(parts[4]) // 2
-                file.write(f"{ip_range}/{cidr}\n")
+# 获取公网ip
+url = 'https://github.moeyy.xyz/https://raw.githubusercontent.com/YYTLZXD2327/AVIC_Downfiles/master/'
+def get_public_ip():
+    try:
+        response = requests.get('http://httpbin.org/ip')
+        if response.status_code == 200:
+            data = response.json()
+            return data['origin']
+    except Exception as e:
+        print(f"发生错误: {e}")
+    return None
 
-    print("中国IPv4地址范围已写入china_ip.txt文件。")
-    url = 'https://github.moeyy.xyz/https://raw.githubusercontent.com/YYTLZXD2327/AVIC_Downfiles/master/'
+def check_ip_location(ip):
+    try:
+        response = requests.get(f'http://ipinfo.io/{ip}/json')
+        if response.status_code == 200:
+            data = response.json()
+            country = data.get('country', '')
+            return country
+    except Exception as e:
+        print(f"发生错误: {e}")
+    return None
+
+public_ip = get_public_ip()
+if public_ip:
+    print(f"您的公网IP地址是: {public_ip}")
+    country = check_ip_location(public_ip)
+    if country:
+        if country == 'CN':
+            print("您的IP地址位于中国。")
+            url = '0'
+        else:
+            print("您的IP地址位于中国以外。")
+            url = 'https://raw.githubusercontent.com/YYTLZXD2327/AVIC_Downfiles/master/'
+    else:
+        print("无法确定IP地址的位置，默认为中国。")
 else:
-    print("无法下载APNIC数据。")
-    url = 'https://raw.githubusercontent.com/YYTLZXD2327/AVIC_Downfiles/master/'
+    print("无法获取公网IP地址，默认为中国。")
+
+    
 # 获取当前文件所在目录的绝对路径
 current_folder_path = os.path.dirname(os.path.abspath(__file__))
 
@@ -91,7 +110,7 @@ for file_name, url in templates_files.items():
 config_path = 'static\\config.yml'
 if not os.path.exists(config_path):
     config = {
-            'savepath': 'download',
+            'Savepath': 'download',
             'password': 'password',
             'username': 'admin',
             'key': '1234567890',
@@ -104,7 +123,7 @@ if not os.path.exists(config_path):
 time.sleep(1)
 with open(config_path, 'r') as f:
     config = yaml.safe_load(f)
-savepath = config['savepath']
+savepath = config['Savepath']
 admin_username = config['username']
 admin_password = config['password']
 key = config['key']
