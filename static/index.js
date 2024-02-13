@@ -8,7 +8,7 @@ function refreshPage() {
 lutDisplay.innerHTML = `最后提交时间：<i class="fa-solid fa-check"></i>${lastUpdateTime}`;
 
 function logoutFunction() {
-  fetch('/logout', {
+  fetch('./logout', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
