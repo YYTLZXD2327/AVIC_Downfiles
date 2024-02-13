@@ -6,14 +6,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>登录 - 中航Down</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}">
-    <script src="{{ url_for('static', filename='index.js') }}"></script>
     <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap.min.css') }}">
     <script src="{{ url_for('static', filename='bootstrap.bundle.min.js') }}"></script>
     <script src="https://kit.fontawesome.com/15cf07dc69.js" crossorigin="anonymous"></script>
     <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
 </head>
 
-<body>
+<body style="overflow: hidden;">
     <div class="container">
         <header class="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom">
             <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none">
@@ -23,10 +22,7 @@
             </a>
 
             <ul class="nav nav-pills">
-                <li class="nav-item"><a href="https://github.com/YYTLZXD2327/AVIC_Downfiles" class="nav-link">GitHub</a>
-                </li>
-                <li class="nav-item"><a href="https://gitee.com/yytlzxd/AVIC_Downfiles" class="nav-link">Gitee</a></li>
-                <li class="nav-item"><a href="./login" class="nav-link">Login / 登录</a></li>
+                <li class="nav-item"><a href="./" class="nav-link">返回首页</a></li>
             </ul>
         </header>
         <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
@@ -36,12 +32,9 @@
                 <li class="breadcrumb-item">登录</li>
             </ol>
         </nav>
-    </div>
-
-    <div class="login">
-        <h1 style="text-align: center;">Login / 登录</h1>
+        <h1 style="text-align: center;">登录</h1>
         <br>
-        <form method="post">
+        <form method="post" class="login">
             <div class="input-group mb-3">
                 <!-- <span class="input-group-text" id="basic-addon1">@</span> -->
                 <input type="text" class="form-control" id="username" name="username" placeholder="Username / 用户名"
@@ -53,14 +46,62 @@
                     aria-label="password" aria-describedby="basic-addon1">
             </div>
             <div class="d-grid gap-2">
-                <button class="btn btn-primary" type="button submit" onclick="login()">OK / 确定</button>
+                <button class="btn btn-primary" type="button submit" onclick="login()">确定</button>
             </div>
-            <div>
-                <img src="https://tool.lu/netcard/">
-            </div>    
         </form>
+
+        <div>
+            <center><img src="https://tool.lu/netcard/"></center>
+        </div>
+
+        <footer class="row row-cols-1 row-cols-sm-2 row-cols-md-5 py-5 my-5 border-top">
+            <div class="col mb-3">
+                <a href="/" class="d-flex align-items-center mb-3 link-dark text-decoration-none">
+                    <a href="/" class="d-flex align-items-center mb-3 link-dark text-decoration-none">
+                        <img src="{{ url_for('static', filename='favicon.ico') }}" alt="Icon"
+                            style="width: 40px;height: 40px">&nbsp;<span class="fs-4">&nbsp;中航Down</span>
+                    </a>
+                </a>
+                <p class="text-muted">Building a simple and stable file download webpage using Python language.</p>
+                <p class="text-muted last-update-time">最后提交时间：<i class="fa-solid fa-check"></i>114514</p>
+            </div>
+
+            <div class="col mb-3"></div>
+            <div class="col mb-3"></div>
+
+            <div class="col mb-3">
+                <h5>友情链接</h5>
+                <ul class="nav flex-column">
+                    <li class="nav-item mb-2"><a href="https://github.23.yytlzxd.bf/"
+                            class="nav-link p-0 text-muted">GitHub
+                            镜像站</a></li>
+                    <li class="nav-item mb-2"><a href="https://blog.yytlzxd.bf/" class="nav-link p-0 text-muted">作者 の
+                            博客</a></li>
+                    <li class="nav-item mb-2"><a href="https://space.bilibili.com/1927979466"
+                            class="nav-link p-0 text-muted">作者 の
+                            哔哩哔哩</a></li>
+                    <li class="nav-item mb-2"><a href="https://github.com/YYTLZXD2327/"
+                            class="nav-link p-0 text-muted">作者 の
+                            GitHub</a></li>
+                    <li class="nav-item mb-2"><a href="https://gitee.com/yytlzxd/" class="nav-link p-0 text-muted">作者 の
+                            Gitee</a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="col mb-3">
+                <h5>源代码</h5>
+                <ul class="nav flex-column">
+                    <li class="nav-item mb-2"><a href="https://gitee.com/yytlzxd/AVIC_Downfiles"
+                            class="nav-link p-0 text-muted">Gitee</a></li>
+                    <li class="nav-item mb-2"><a href="https://github.com/YYTLZXD2327/AVIC_Downfiles"
+                            class="nav-link p-0 text-muted">GitHub</a></li>
+                </ul>
+            </div>
+        </footer>
     </div>
 
+    <script src="{{ url_for('static', filename='index.js') }}"></script>
 </body>
 
 </html>

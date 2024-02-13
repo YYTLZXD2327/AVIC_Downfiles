@@ -240,6 +240,7 @@ def logout():
 @login_required
 def admin():
     return render_template('control.html')
+
 # 上传文件
 @app.route('/upload', methods=['POST'], endpoint='upload_file')
 @require_auth
@@ -267,6 +268,7 @@ def delete_file(filename):
         return redirect(url_for('index'))
     else:
         return "未找到文件", 404
+    
 # 文件列表
 @app.route('/api/files', methods=['POST'], endpoint='files')
 def get_files_info():
@@ -277,9 +279,9 @@ def get_files_info():
         if os.path.isfile(file_path):
             file_info = get_file_info(file_path)
             files_info.append({
-                '文件名': file_info[0],
-                '文件大小': file_info[1],
-                '最后修改时间': str(file_info[2])
+                'name': file_info[0],
+                'size': file_info[1],
+                'lastEditTime': str(file_info[2])
             })
 
 
