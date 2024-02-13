@@ -9,7 +9,8 @@ config_path = 'config.yml'
 if not os.path.exists(config_path):
     config = {
         'URL': '127.0.0.1:5000',
-        'password': 'password',
+        'protocol': 'http',
+        'password': 'password'
     }
     with open(config_path, 'w') as f:
         yaml.dump(config, f)
@@ -79,16 +80,15 @@ def get_file_list(file_list_text):
         file_list_text.insert(tk.END, "当前文件列表:\n")
         
         try:
-            data = json.loads(response.content)
-            for item in data:
-                file_list_text.insert(tk.END, f"文件名: {item['文件名']}\n")
-                file_list_text.insert(tk.END, f"文件大小: {item['文件大小']}\n")
-                file_list_text.insert(tk.END, f"最后修改时间: {item['最后修改时间']}\n\n")
-        except json.JSONDecodeError:
-            file_list_text.insert(tk.END, "无法解析JSON响应内容")
+            data = response.content.decode('utf-8') 
+            file_list_text.insert(tk.END, data)
+        except Exception as e:
+            file_list_text.insert(tk.END, "无法解析响应内容")
     else:
         file_list_text.delete('1.0', tk.END)  
         file_list_text.insert(tk.END, f"获取文件列表失败，状态码: {response.status_code}")
+
+
 
 # 创建GUI窗口
 root = tk.Tk()
