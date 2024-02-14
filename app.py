@@ -117,7 +117,7 @@ for file_name, url in templates_files.items():
     if not os.path.exists(file_path):
         download_file(url, file_path)
 # 配置文件
-config_path = 'static\config.yml'
+config_path = os.path.join('static', 'config.yml')
 time.sleep(1)
 with open(config_path, 'r') as f:
     config = yaml.safe_load(f)
