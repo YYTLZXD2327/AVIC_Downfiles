@@ -1,5 +1,5 @@
 # 导入模块
-from flask import Flask, render_template, request, jsonify, redirect, url_for, send_from_directory,abort
+from flask import Flask, render_template, request, jsonify, redirect, url_for, send_from_directory,flash
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user,current_user
 from apscheduler.schedulers.background import BackgroundScheduler
 from datetime import datetime, timedelta
@@ -212,22 +212,25 @@ def unauthorized():
 def load_user(user_id):
     return User(user_id) if user_id == '1' else None
 
+
 @app.route('/login', methods=['GET', 'POST'], endpoint='login')
 def login():
-    if current_user.is_authenticated:  # 检查用户是否已经登录
-        return redirect(url_for('admin'))  # 如果已经登录，直接跳转到admin页面
+    if current_user.is_authenticated:
+        return redirect(url_for('admin'))
 
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
+        
         if username == admin_username and password == admin_password:
             user = User(1)  # 模拟用户
             login_user(user, remember=True)
             return redirect(url_for('admin'))
         else:
-            return '错误: 您输入的用户名或密码无效'
-    
+            flash('登录失败，请检查您的凭据并重试', 'error')
+
     return render_template('login.html')
+
 
 @app.route('/logout', methods=['POST'], endpoint='logout')
 @login_required
