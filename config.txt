@@ -1,1 +1,2 @@
 version: 1.8
+templates_rm: login.html
