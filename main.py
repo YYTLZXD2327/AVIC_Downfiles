@@ -1,6 +1,7 @@
 import subprocess
 import requests
 import os
+import tqdm
 
 # 获取公网IP地址
 def get_public_ip():
@@ -102,6 +103,8 @@ if response.status_code == 200:
     with open("version.txt", "wb") as file:
         file.write(response.content)
     print("version.txt 文件下载成功.")
+else:
+    print("无法下载version.txt文件.")
 
 url = f'{base_url}/app.py'
 response = requests.get(url)
