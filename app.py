@@ -88,6 +88,33 @@ def download_file(url, file_path):
     print(f"下载完成: {file_path.split('/')[-1]}")
     print(f"文件大小: {file_size} 字节")
     print(f"下载时间: {download_time:.2f} 秒")
+
+# 加载static文件夹中的文件
+static_files = {
+    'index.js': f'{base_url}/static/index.js',
+    'index.css': f'{base_url}/static/index.css',
+    'favicon.ico': f'{base_url}/static/favicon.ico',
+    'bootstrap.min.css': f'{base_url}/static/bootstrap.min.css',
+    'bootstrap.bundle.min.js': f'{base_url}/static/bootstrap.bundle.min.js'
+}
+
+for file_name, url in static_files.items():
+    file_path = os.path.join(static_folder_path, file_name)
+    if not os.path.exists(file_path):
+        download_file(url, file_path)
+
+# 加载templates文件夹中的文件
+templates_files = {
+    'login.html': f'{base_url}/templates/login.html',
+    'index.html': f'{base_url}/templates/index.html',
+    'control.html': f'{base_url}/templates/control.html',
+    '404.html': f'{base_url}/templates/404.html'
+}
+
+for file_name, url in templates_files.items():
+    file_path = os.path.join(templates_folder_path, file_name)
+    if not os.path.exists(file_path):
+        download_file(url, file_path)
 # 配置文件
 config_path = 'static\\config.yml'
 if not os.path.exists(config_path):
@@ -261,7 +288,10 @@ def get_files_info():
 
 
     return jsonify(files_info)
-
+# 版本界面
+@app.route('/api/version', methods=['GET'], endpoint='version')
+def get_version():
+    return '1.0'
 # 404界面
 @app.errorhandler(404)
 def page_not_found(e):
