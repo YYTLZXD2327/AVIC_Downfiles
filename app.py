@@ -1,6 +1,6 @@
 # 导入模块
 from flask import Flask, render_template, request, jsonify, redirect, url_for, send_from_directory
-from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user
+from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user,current_user
 from apscheduler.schedulers.background import BackgroundScheduler
 from datetime import datetime, timedelta
 from tqdm import tqdm
@@ -206,6 +206,9 @@ def load_user(user_id):
 
 @app.route('/login', methods=['GET', 'POST'], endpoint='login')
 def login():
+    if current_user.is_authenticated:  # 检查用户是否已经登录
+        return redirect(url_for('admin'))  # 如果已经登录，直接跳转到admin页面
+
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
@@ -230,11 +233,10 @@ def logout():
 @app.route('/admin', endpoint='admin')
 @login_required
 def admin():
-    return render_template('control.html')
+    return render_template('admin.html')
 
 # 上传文件
 @app.route('/upload', methods=['POST'], endpoint='upload_file')
-@require_auth
 def upload_file():
     if 'file' not in request.files:
         return "无文件部分", 400
@@ -244,24 +246,28 @@ def upload_file():
     if file.filename == '':
         return "没有选定的文件", 400
 
-    file.save(os.path.join(savepath, file.filename))
-    return redirect(url_for('index'))
-
-
-# 删除文件
-@app.route('/delete/<path:filename>', methods=['POST'], endpoint='delete_file')
-@require_auth
-def delete_file(filename):
-    file_path = os.path.join(savepath, filename)
-    
-    if os.path.exists(file_path) and os.path.isfile(file_path):
-        os.remove(file_path)
+    if current_user.is_authenticated:  # 检查管理员是否已经登录
+        file.save(os.path.join(savepath, file.filename))
         return redirect(url_for('index'))
     else:
-        return "未找到文件", 404
+        return '未经授权', 401
+
+# 删除文件
+@app.route('/delete/<path:filename>', methods=['GET'], endpoint='delete_file')
+def delete_file(filename):
+    if current_user.is_authenticated:  # 检查管理员是否已经登录
+        file_path = os.path.join(savepath, filename)
+        
+        if os.path.exists(file_path) and os.path.isfile(file_path):
+            os.remove(file_path)
+            return redirect(url_for('index'))
+        else:
+            return "未找到文件", 404
+    else:
+        return '未经授权', 401
     
 # 文件列表
-@app.route('/api/files', methods=['POST'], endpoint='files')
+@app.route('/api/files', methods=['GET'], endpoint='files')
 def get_files_info():
     files_info = []
 
