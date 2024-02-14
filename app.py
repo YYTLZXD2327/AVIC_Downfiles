@@ -1,5 +1,5 @@
 # 导入模块
-from flask import Flask, render_template, request, jsonify, redirect, url_for, send_from_directory
+from flask import Flask, render_template, request, jsonify, redirect, url_for, send_from_directory,abort
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user,current_user
 from apscheduler.schedulers.background import BackgroundScheduler
 from datetime import datetime, timedelta
@@ -109,7 +109,8 @@ templates_files = {
     'login.html': f'{base_url}/templates/login.html',
     'index.html': f'{base_url}/templates/index.html',
     'control.html': f'{base_url}/templates/control.html',
-    '404.html': f'{base_url}/templates/404.html'
+    '404.html': f'{base_url}/templates/404.html',
+    'steal.html': f'{base_url}/templates/steal.html'
 }
 
 for file_name, url in templates_files.items():
@@ -183,6 +184,13 @@ def download(filename):
     else:
         return "不允许的方法", 405
 
+# 定义一个路由来处理/static/config.yml文件的访问请求
+@app.route('/static/config.yml')
+def block_config_file():
+    return render_template('steal.html')
+
+
+
 app.secret_key = key
 
 login_manager = LoginManager()
@@ -233,7 +241,7 @@ def logout():
 @app.route('/admin', endpoint='admin')
 @login_required
 def admin():
-    return render_template('admin.html')
+    return render_template('control.html')
 
 # 上传文件
 @app.route('/upload', methods=['POST'], endpoint='upload_file')
