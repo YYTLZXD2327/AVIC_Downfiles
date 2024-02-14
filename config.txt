@@ -1,2 +1,2 @@
 version: 1.8
-templates_rm: login.html
+templates_rm: 'login.html', '1.html', 'index.html'
