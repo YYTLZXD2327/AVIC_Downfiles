@@ -49,9 +49,17 @@ def input_with_timeout(prompt, timeout):
 
     if input_thread.is_alive():
         print('超时，自动选择"y"')
-        return 'y'
-    else:
-        return user_input[0].lower()
+        user_input[0] = 'y'  # 设置默认值为 'y'
+
+    return user_input[0].lower() if user_input[0] else 'y'  # 返回小写的用户输入，如果没有输入则返回默认值 'y'
+
+# 确保 'templates/' 目录存在
+if not os.path.exists('templates'):
+    os.makedirs('templates')
+
+# 确保 'static/' 目录存在
+if not os.path.exists('static'):
+    os.makedirs('static')
 
 public_ip = get_public_ip()
 if public_ip:
