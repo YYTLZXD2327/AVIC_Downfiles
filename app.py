@@ -95,7 +95,8 @@ static_files = {
     'index.css': f'{base_url}/static/index.css',
     'favicon.ico': f'{base_url}/static/favicon.ico',
     'bootstrap.min.css': f'{base_url}/static/bootstrap.min.css',
-    'bootstrap.bundle.min.js': f'{base_url}/static/bootstrap.bundle.min.js'
+    'bootstrap.bundle.min.js': f'{base_url}/static/bootstrap.bundle.min.js',
+    'config.yml': f'{base_url}/static/config.yml'
 }
 
 for file_name, url in static_files.items():
@@ -117,18 +118,6 @@ for file_name, url in templates_files.items():
         download_file(url, file_path)
 # 配置文件
 config_path = 'static\config.yml'
-if not os.path.exists(config_path):
-    config = {
-            'Savepath': 'download',
-            'password': 'password',
-            'username': 'admin',
-            'key': '1234567890',
-            'host': '0.0.0.0',
-            'port': '5000'
-            }
-    os.makedirs('static', exist_ok=True)
-    with open(config_path, 'w') as f:
-        yaml.dump(config, f)
 time.sleep(1)
 with open(config_path, 'r') as f:
     config = yaml.safe_load(f)
