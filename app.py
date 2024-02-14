@@ -121,7 +121,7 @@ config_path = 'static\config.yml'
 time.sleep(1)
 with open(config_path, 'r') as f:
     config = yaml.safe_load(f)
-savepath = config['savepath']
+savepath = config['Savepath']
 admin_username = config['username']
 admin_password = config['password']
 key = config['key']
