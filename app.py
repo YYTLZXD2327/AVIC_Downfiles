@@ -119,7 +119,7 @@ for file_name, url in templates_files.items():
 config_path = 'static\\config.yml'
 if not os.path.exists(config_path):
     config = {
-            'savepath': 'download',
+            'Savepath': 'download',
             'password': 'password',
             'username': 'admin',
             'key': '1234567890',
@@ -132,7 +132,7 @@ if not os.path.exists(config_path):
 time.sleep(1)
 with open(config_path, 'r') as f:
     config = yaml.safe_load(f)
-savepath = config['savepath']
+savepath = config['Savepath']
 admin_username = config['username']
 admin_password = config['password']
 key = config['key']
