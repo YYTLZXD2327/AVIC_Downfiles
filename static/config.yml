@@ -1,6 +1,6 @@
 savepath: download
 host: 0.0.0.0
-key: '1234567890'
-password: password
 port: '5000'
+key: '1234567890'
 username: admin
+password: password
