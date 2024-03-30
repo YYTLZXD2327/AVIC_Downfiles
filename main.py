@@ -68,17 +68,17 @@ if public_ip:
     if country:
         if country == 'CN':
             print("您的IP地址位于中国。")
-            base_url = 'https://github.23.yytlzxd.bf/https://raw.githubusercontent.com/YYTLZXD2327/AVIC_Downfiles/master'  # 加速服务器URL
+            base_url = 'https://github.yytlzxd.bf/https://raw.githubusercontent.com/YYTLZXD2327/AVIC_Downfiles/master'  # 加速服务器URL
         else:
             print("您的IP地址位于中国以外。")
             base_url = 'https://raw.githubusercontent.com/YYTLZXD2327/AVIC_Downfiles/master'  # GitHub URL
     else:
         print("无法确定IP地址的位置，默认为中国。")
-        base_url = 'https://github.23.yytlzxd.bf/https://raw.githubusercontent.com/YYTLZXD2327/AVIC_Downfiles/master'  # 默认为中国
+        base_url = 'https://github.yytlzxd.bf/https://raw.githubusercontent.com/YYTLZXD2327/AVIC_Downfiles/master'  # 默认为中国
 
 else:
     print("无法获取公网IP地址，默认为中国。")
-    base_url = 'https://github.23.yytlzxd.bf/https://raw.githubusercontent.com/YYTLZXD2327/AVIC_Downfiles/master'  # 默认为中国
+    base_url = 'https://github.yytlzxd.bf/https://raw.githubusercontent.com/YYTLZXD2327/AVIC_Downfiles/master'  # 默认为中国
 
 config_url = f'{base_url}/version.txt'
 config_data = get_config_from_url(config_url)
