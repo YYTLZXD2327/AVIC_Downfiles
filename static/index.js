@@ -1,12 +1,3 @@
-var lutDisplay = document.querySelector('.last-update-time')
-const lastUpdateTime = "2024年2月13日"
-
-function refreshPage() {
-  location.reload(true);
-}
-
-lutDisplay.innerHTML = `最后提交时间：<i class="fa-solid fa-check"></i>${lastUpdateTime}`;
-
 function logoutFunction() {
   fetch('./logout', {
     method: 'POST',
@@ -26,3 +17,39 @@ function logoutFunction() {
     });
   return false;
 }
+
+const fileInput = document.getElementById('fileInput');
+const uploadButton = document.getElementById('uploadButton');
+
+let selectedFile = null;
+
+fileInput.addEventListener('change', function (event) {
+  const file = event.target.files[0];
+  if (file) {
+    selectedFile = file;
+    uploadButton.disabled = false;
+  }
+});
+
+uploadButton.addEventListener('click', function () {
+  if (selectedFile) {
+    const formData = new FormData();
+    formData.append('file', selectedFile);
+    fetch('/upload', {
+      method: 'POST',
+      body: formData
+    })
+      .then(response => {
+        if (response.ok) {
+          alert(`文件 |${selectedFile.name}| 上传成功！`);
+          selectedFile = null;
+          uploadButton.disabled = true;
+          location.reload(true);
+        } else {
+          return response.text().then(errorText => {
+            throw new Error(`上传失败: ${errorText}`);
+          });
+        }
+      })
+  }
+});

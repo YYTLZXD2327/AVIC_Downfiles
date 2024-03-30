@@ -244,7 +244,17 @@ def logout():
 @app.route('/admin', endpoint='admin')
 @login_required
 def admin():
-    return render_template('control.html')
+    admin_files_info = []
+
+    for file_name in os.listdir(savepath):
+        file_path = os.path.join(savepath, file_name)
+        if os.path.isfile(file_path):
+            file_info = get_file_info(file_path)
+            admin_files_info.append(file_info)
+
+    # 根据文件的修改时间对文件信息进行排序
+    admin_sorted_files_info = sorted(admin_files_info, key=lambda x: x[2], reverse=True)
+    return render_template('control.html',admin_files_info=admin_sorted_files_info)
 
 # 上传文件
 @app.route('/upload', methods=['POST'], endpoint='upload_file')
@@ -271,7 +281,7 @@ def delete_file(filename):
         
         if os.path.exists(file_path) and os.path.isfile(file_path):
             os.remove(file_path)
-            return redirect(url_for('index'))
+            return redirect(url_for('admin'))
         else:
             return "未找到文件", 404
     else:
