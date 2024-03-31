@@ -1,8 +1,9 @@
 # 导入模块
-from flask import Flask, render_template, request, jsonify, redirect, url_for, send_from_directory,flash
+from flask import Flask, render_template, request, jsonify, redirect, url_for, send_from_directory,flash,send_file
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user,current_user
 from apscheduler.schedulers.background import BackgroundScheduler
 from datetime import datetime, timedelta
+from collections import Counter
 from tqdm import tqdm
 import requests
 import math
@@ -131,6 +132,7 @@ port = config['port']
 # 保存文件
 download_folder = savepath
 os.makedirs(download_folder, exist_ok=True)
+download_counts = Counter()
 print('初始化完成，正在启动...')
 print('Initialization completed, starting...')
 
@@ -180,6 +182,7 @@ def index():
 @app.route('/download/<path:filename>', methods=['GET', 'POST'])
 def download(filename):
     if request.method == 'GET' or request.method == 'POST':
+        download_counts[filename] += 1
         return send_from_directory(download_folder, filename)
     else:
         return "不允许的方法", 405
