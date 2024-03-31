@@ -153,7 +153,8 @@ def get_file_info(file_path):
     file_size = os.path.getsize(file_path)
     file_size = convert_size(file_size)
     file_last_modified = datetime.fromtimestamp(os.path.getmtime(file_path))
-    return (file_name, file_size, file_last_modified)
+    file_download_count = f"{download_counts[file_name]} 次"
+    return (file_name, file_size, file_last_modified, file_download_count)
 
 def require_auth(func):
     def wrapper(*args, **kwargs):
@@ -196,13 +197,12 @@ def download_file(filename):
 
 @app.route('/download_count/<filename>', methods=['GET'])
 def get_download_count(filename):
-    return f"文件 {filename} 已下载 {download_counts[filename]} 次。"
+    return f"{download_counts[filename]} 次"
+
 # 定义一个路由来处理/static/config.yml文件的访问请求
 @app.route('/static/config.yml')
 def block_config_file():
     return render_template('steal.html')
-
-
 
 app.secret_key = key
 
@@ -267,7 +267,7 @@ def admin():
 
     # 根据文件的修改时间对文件信息进行排序
     admin_sorted_files_info = sorted(admin_files_info, key=lambda x: x[2], reverse=True)
-    return render_template('control.html',admin_files_info=admin_sorted_files_info)
+    return render_template('control.html', admin_files_info=admin_sorted_files_info)
 
 # 上传文件
 @app.route('/upload', methods=['POST'], endpoint='upload_file')
@@ -314,8 +314,6 @@ def get_files_info():
                 'size': file_info[1],
                 'lastEditTime': str(file_info[2])
             })
-
-
     return jsonify(files_info)
 # 版本界面
 @app.route('/api/version', methods=['GET'], endpoint='version')

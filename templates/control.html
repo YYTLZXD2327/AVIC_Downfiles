@@ -37,15 +37,8 @@
                 <br>如果您的浏览器不支持 JavaScript，请使用较新的浏览器打开此页面。
                 <br>由此给您带来的诸多不便，开发者深表歉意。
             </div>
+            <br>
         </noscript>
-
-        <div class="card">
-            <div class="card-body">
-                <h3 class="card-title">文件请求数（自节点启动）</h5>
-                <h1 class="card-subtitle mb-2">114514 次</h6>
-            </div>
-        </div>
-        <br>
         <div class="input-group">
             <input type="file" class="form-control" id="fileInput" aria-describedby="inputGroupFileAddon04"
                 aria-label="Upload">
@@ -58,7 +51,7 @@
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">{{ file_info[0] }}</h5>
-                        <p class="card-text">文件大小: {{ file_info[1] }}<br>最后修改时间: {{ file_info[2] }}</p>
+                        <p class="card-text">文件大小: {{ file_info[1] }}<br>最后修改时间: {{ file_info[2] }}<br>下载次数: {{ file_info[3] }}</p>
                         <a href="../download/{{ file_info[0] }}" class="btn btn-primary">下载</a>
                         <a href="../delete/{{ file_info[0] }}" class="btn btn-danger">彻底删除</a>
                     </div>
