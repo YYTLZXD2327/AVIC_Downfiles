@@ -179,14 +179,24 @@ def index():
 
     return render_template('index.html', files_info=sorted_files_info)
 
-@app.route('/download/<path:filename>', methods=['GET', 'POST'])
-def download(filename):
+@app.route('/download/<filename>', methods=['GET', 'POST'])
+def download_file(filename):
     if request.method == 'GET' or request.method == 'POST':
-        download_counts[filename] += 1
-        return send_from_directory(download_folder, filename)
-    else:
-        return "不允许的方法", 405
+        file_path = os.path.join(download_folder, filename)
+        
+        if os.path.exists(file_path):
+            # 增加下载次数计数
+            download_counts[filename] += 1
+            # 返回文件给用户
+            return send_file(file_path, as_attachment=True)
+        else:
+            return "文件未找到", 404
 
+    return "未提供文件名", 400
+
+@app.route('/download_count/<filename>', methods=['GET'])
+def get_download_count(filename):
+    return f"文件 {filename} 已下载 {download_counts[filename]} 次。"
 # 定义一个路由来处理/static/config.yml文件的访问请求
 @app.route('/static/config.yml')
 def block_config_file():
