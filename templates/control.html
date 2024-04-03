@@ -44,21 +44,35 @@
                 aria-label="Upload">
             <button class="btn btn-outline-secondary" type="button" id="uploadButton" disabled>上传</button>
         </div><br>
-
-        <div class="row">
-            {% for file_info in admin_files_info %}
-            <div class="col-sm-6 mb-3 mb-sm-0">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">{{ file_info[0] }}</h5>
-                        <p class="card-text">文件大小: {{ file_info[1] }}<br>最后修改时间: {{ file_info[2] }}<br>下载次数: {{ file_info[3] }}</p>
-                        <a href="../download/{{ file_info[0] }}" class="btn btn-primary">下载</a>
-                        <a href="../delete/{{ file_info[0] }}" class="btn btn-danger">彻底删除</a>
-                    </div>
-                </div>
-            </div>
-            {% endfor %}
-        </div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">文件名</th>
+                    <th scope="col">文件大小</th>
+                    <th scope="col">最后修改时间</th>
+                    <th scope="col">下载次数</th>
+                    <th scope="col">操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for file_info in admin_files_info %}
+                <tr>
+                    <td>{{ file_info[0] }}</td>
+                    <td>{{ file_info[1] }}</td>
+                    <td>{{ file_info[2] }}</td>
+                    <td>{{ file_info[3] }}</td>
+                    <td>
+                        <a href="../download/{{ file_info[0] }}" download>
+                            <i class="fa-solid fa-download"></i>
+                        </a>&nbsp;
+                        <a href="../delete/{{ file_info[0] }}">
+                            <i class="fa-solid fa-trash"></i>
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
     </div>
     <script src="{{ url_for('static', filename='index.js') }}"></script>
 </body>

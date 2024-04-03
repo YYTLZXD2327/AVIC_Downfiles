@@ -41,8 +41,8 @@
       <thead>
         <tr>
           <th scope="col">文件名</th>
-          <th scope="col">最后修改时间</th>
           <th scope="col">文件大小</th>
+          <th scope="col">最后修改时间</th>
           <th scope="col">操作</th>
         </tr>
       </thead>
@@ -50,8 +50,8 @@
         {% for file_info in files_info %}
         <tr>
           <td>{{ file_info[0] }}</td>
-          <td>{{ file_info[2] }}</td>
           <td>{{ file_info[1] }}</td>
+          <td>{{ file_info[2] }}</td>
           <td><a href="/download/{{ file_info[0] }}" download><i class="fa-solid fa-download"></i></i></i></a></td>
         </tr>
         {% endfor %}
